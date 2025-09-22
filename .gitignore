@@ -1,0 +1,23 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
+
+# Builds
+.next/
+dist/
+coverage/
+build/
+
+# Strapi
+public/uploads/
+.tmp/
+
+# Playwright/Cypress
+playwright-report/
+blob-report/
+cypress/
+

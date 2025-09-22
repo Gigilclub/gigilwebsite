@@ -1,0 +1,22 @@
+{
+  "name": "gigil",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "frontend",
+    "backend/express",
+    "backend/strapi",
+    "db"
+  ],
+  "scripts": {
+    "build": "npm run -ws build",
+    "dev": "concurrently -n FRONTEND,EXPRESS,STRAPI -c cyan,magenta,green \"npm:start --workspace frontend\" \"npm:start --workspace backend/express\" \"npm:start --workspace backend/strapi\"",
+    "test": "npm run -ws test",
+    "lint": "npm run -ws lint"
+  },
+  "devDependencies": {
+    "@prisma/debug": "^6.16.2",
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7"
+  }
+}
