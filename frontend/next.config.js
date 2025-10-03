@@ -1,19 +1,23 @@
-// giftgpt/frontend/next.config.js
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
+      // Rule for local development environment (keep this)
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '1337', // 👈 REQUIRED: Strapi's port
-        pathname: '/uploads/**', // 👈 REQUIRED: Strapi's asset path
+        port: '1337',
+        pathname: '/uploads/**',
       },
-      // You can remove the generic HTTPS rule, but it is harmless if kept:
-      // { protocol: 'https', hostname: '**' }
+      // Rule for your live Strapi backend on Render (add this)
+      {
+        protocol: 'https',
+        hostname: 'gigil-cms-backend.onrender.com',
+        port: '', // Default port for HTTPS
+        pathname: '/uploads/**',
+      },
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
