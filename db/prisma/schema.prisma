@@ -7,12 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Gift {
-  id          String  @id @default(cuid())
+model Category {
+  id          String   @id @default(cuid())
   name        String
+  slug        String   @unique
   description String
-  category    String
+  imageUrl    String?
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  gifts       Gift[]
+}
+
+model Gift {
+  id           String   @id @default(cuid())
+  name         String
+  description  String
+  imageUrl     String?
+  price        Float
+  priceRange   String   // "under-25", "25-50", "50-100", "100-plus"
+  categoryId   String
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  recipientType String  // "him", "her", "kids", "teen", "anyone"
+  interests    String[] // Array of interests: "tech", "sports", "arts", "food", "travel", etc.
+  occasion     String[] // "birthday", "anniversary", "holiday", "thank-you", "any"
+  url          String?  // External product URL
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([priceRange])
+  @@index([recipientType])
 }
 
 
