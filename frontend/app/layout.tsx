@@ -1,29 +1,52 @@
-export const metadata = { title: 'Gigil', description: 'Gifting cum blog' };
-import './globals.css';
-import Link from 'next/link';
+import type { Metadata } from 'next'
+import { Inter, Playfair_Display } from 'next/font/google'
+import './globals.css'
+import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap'
+})
+
+const playfair = Playfair_Display({ 
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap'
+})
+
+export const metadata: Metadata = {
+  title: 'GIGIL - Luxury Gifting Platform',
+  description: 'Discover the perfect gift for every moment. Curated experiences that create lasting memories.',
+  keywords: ['gifts', 'luxury', 'experiences', 'curated', 'millennials'],
+  authors: [{ name: 'GIGIL Team' }],
+  openGraph: {
+    title: 'GIGIL - Luxury Gifting Platform',
+    description: 'Discover the perfect gift for every moment. Curated experiences that create lasting memories.',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'GIGIL - Luxury Gifting Platform',
+    description: 'Discover the perfect gift for every moment. Curated experiences that create lasting memories.',
+  },
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-white text-gray-900">
-        <header className="border-b border-gray-100 bg-white">
-          <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
-              <img src="/logo.svg" alt="Gigil" className="h-8 w-8" />
-              <span className="text-xl font-semibold text-gigil-teal">Gigil</span>
-            </Link>
-            <nav className="flex gap-6">
-              <Link className="hover:text-gigil-teal" href="/">Gifting</Link>
-              <Link className="hover:text-gigil-teal" href="/blog">Blog</Link>
-            </nav>
-          </div>
-        </header>
-        <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-        <footer className="mt-12 border-t border-gray-100 bg-white">
-          <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-gray-500">© {new Date().getFullYear()} Gigil</div>
-        </footer>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      <body className="font-inter antialiased">
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
-  );
+  )
 }
 

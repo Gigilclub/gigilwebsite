@@ -1,12 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  /* GIGIL Design System Variables */
+  --gigil-cream: #F9F5F0;
+  --gigil-off-white: #FAFAF8;
   --gigil-teal: #005F56;
-  --gigil-peach: #FFCCAB;
+  --gigil-peach: #FFCAB0;
+  --gigil-border: #E8E3DC;
+  --gigil-dark: #2D2D2D;
+  --gigil-white: #FFFFFF;
 }
 
-body { background-color: #fff; }
+@layer base {
+  * {
+    @apply border-gigil-border;
+  }
+  
+  body {
+    @apply bg-gigil-cream text-gigil-teal font-inter;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-playfair text-gigil-teal;
+  }
+  
+  h1 {
+    @apply text-h1-mobile desktop:text-h1-desktop;
+  }
+  
+  h2 {
+    @apply text-h2-mobile desktop:text-h2-desktop;
+  }
+  
+  h3 {
+    @apply text-h3-mobile desktop:text-h3-desktop;
+  }
+  
+  p {
+    @apply text-body;
+  }
+  
+  small {
+    @apply text-small;
+  }
+  
+  label {
+    @apply text-label;
+  }
+}
+
+@layer components {
+  .gigil-container {
+    @apply mx-auto max-w-7xl px-6;
+  }
+  
+  .gigil-section {
+    @apply py-3xl;
+  }
+  
+  .gigil-card {
+    @apply bg-gigil-off-white rounded-lg shadow-gigil-sm border border-gigil-border;
+  }
+  
+  .gigil-button-primary {
+    @apply bg-gigil-peach text-gigil-teal px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 hover:shadow-gigil-md hover:-translate-y-0.5;
+  }
+  
+  .gigil-button-secondary {
+    @apply bg-transparent text-gigil-teal border border-gigil-teal px-6 py-3 rounded-lg font-inter font-medium transition-all duration-300 hover:bg-gigil-teal hover:text-gigil-white;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
 
 

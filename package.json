@@ -4,13 +4,12 @@
   "version": "0.1.0",
   "workspaces": [
     "frontend",
-    "backend/express",
     "backend/strapi",
     "db"
   ],
   "scripts": {
     "build": "npm run -ws build",
-    "dev": "concurrently -n FRONTEND,EXPRESS,STRAPI -c cyan,magenta,green \"npm:start --workspace frontend\" \"npm:start --workspace backend/express\" \"npm:start --workspace backend/strapi\"",
+    "dev": "concurrently -n FRONTEND,STRAPI -c cyan,green \"npm:dev --workspace frontend\" \"npm:develop --workspace backend/strapi\"",
     "test": "npm run -ws test",
     "lint": "npm run -ws lint"
   },
