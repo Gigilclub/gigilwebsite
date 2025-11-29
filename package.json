@@ -6,11 +6,15 @@
     "frontend",
     "backend/express",
     "backend/strapi",
-    "db"
+    "db",
+    "new-frontend"
   ],
   "scripts": {
     "build": "npm run -ws build",
     "dev": "concurrently -n FRONTEND,EXPRESS,STRAPI -c cyan,magenta,green \"npm:start --workspace frontend\" \"npm:start --workspace backend/express\" \"npm:start --workspace backend/strapi\"",
+    "new-frontend:dev": "npm run dev --workspace new-frontend",
+    "new-frontend:build": "npm run build --workspace new-frontend",
+    "new-frontend:start": "npm run start --workspace new-frontend",
     "test": "npm run -ws test",
     "lint": "npm run -ws lint"
   },

@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  # Frontend Service (Next.js)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_EXPRESS_API_URL=http://express-api:3001/api
+      - NEXT_PUBLIC_STRAPI_API_URL=http://strapi:1337/api
+      - NEXT_PUBLIC_APP_NAME=Gigil
+    depends_on:
+      - express-api
+      - strapi
+    networks:
+      - app-network
+    volumes:
+      # Mount for development (optional - comment out for production)
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
+  # Express API Service (Gifting API)
+  express-api:
+    build:
+      context: ../gigilwebsite/backend/express  # Update this path to your backend location
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://gigil_user:gigil_password@db:5432/gigil_db
+      - FRONTEND_URL=http://frontend:3000
+      - PORT=3001
+    depends_on:
+      - db
+    networks:
+      - app-network
+    volumes:
+      # Mount for development (optional)
+      - ../gigilwebsite/backend/express:/app
+      - /app/node_modules
+
+  # Strapi CMS Service (Blog API)
+  strapi:
+    build:
+      context: ../gigilwebsite/backend/strapi  # Update this path to your backend location
+      dockerfile: Dockerfile
+    ports:
+      - "1337:1337"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=gigil_db
+      - DATABASE_USERNAME=gigil_user
+      - DATABASE_PASSWORD=gigil_password
+      - DATABASE_SSL=false
+      - HOST=0.0.0.0
+      - PORT=1337
+      - APP_KEYS=your-app-keys-here  # Generate these in Strapi
+      - API_TOKEN_SALT=your-api-token-salt-here
+      - ADMIN_JWT_SECRET=your-admin-jwt-secret-here
+      - TRANSFER_TOKEN_SALT=your-transfer-token-salt-here
+      - JWT_SECRET=your-jwt-secret-here
+    depends_on:
+      - db
+    networks:
+      - app-network
+    volumes:
+      # Mount for development (optional)
+      - ../gigilwebsite/backend/strapi:/app
+      - /app/node_modules
+      - strapi_data:/app/.tmp
+      - strapi_uploads:/app/public/uploads
+
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=gigil_db
+      - POSTGRES_USER=gigil_user
+      - POSTGRES_PASSWORD=gigil_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gigil_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
+  strapi_data:
+  strapi_uploads:
+
+networks:
+  app-network:
+    driver: bridge
+
