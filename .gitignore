@@ -1,1 +1,9 @@
 node_modules
+
+# Build artifacts
+.next/
+dist/
+.strapi/
+
+# Cache
+.cache/
